@@ -1,13 +1,11 @@
 package com.pavlig43.features.mainscreen
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.pavlig43.features.common.enumui.mappers.toGenderUI
 import com.pavlig43.features.mainscreen.model.MainScreenPreviewUi
-import com.pavlig43.features.mainscreen.route.MainScreenRoute
 import com.pavlig43.features.utils.getCountYearsToCurrentYear
+import com.pavlig43.retromeetdata.friendRepository.ObserveFriendRequestRepository
 import com.pavlig43.retromeetdata.mainScreenPreviewRepository.MainScreenPreviewRepository
 import com.pavlig43.retromeetdata.mainScreenPreviewRepository.model.MainScreenPreviewResponse
 import com.pavlig43.retromeetdata.utils.requestResult.RequestResult
@@ -21,13 +19,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
-    saveStateHandle: SavedStateHandle,
     mainScreenPreviewRepository: MainScreenPreviewRepository,
+    friendRequestRepository: ObserveFriendRequestRepository
 ) : ViewModel() {
-    private val loginId = checkNotNull(saveStateHandle.toRoute<MainScreenRoute>()).loginId
 
-
-    val userInfoPreviewState = mainScreenPreviewRepository.observeMainScreenPreview(loginId)
+    val userInfoPreviewState = mainScreenPreviewRepository.observeMainScreenPreview()
         .map { result -> result.mapTo { it.toMainScreenPreviewUi() }.toUserInfoPreviewState() }
         .stateIn(
             viewModelScope,
@@ -35,18 +31,22 @@ class MainScreenViewModel @Inject constructor(
             UserInfoPreviewState.Loading
         )
 
-
+    val requestToFriend = friendRequestRepository.observeFriendRequest()
+    .stateIn(
+        viewModelScope,
+        SharingStarted.Lazily,
+        0
+    )
 
     fun goToScreen(action: (Int) -> Unit) {
-        action(loginId)
+        action(1)
     }
 
     val unreadMessages = MutableStateFlow(0)
-    val requestToFriend = MutableStateFlow(0)
 }
 
 sealed class UserInfoPreviewState {
-    object Loading : UserInfoPreviewState()
+    data object Loading : UserInfoPreviewState()
     data class Success(val data: MainScreenPreviewUi) : UserInfoPreviewState()
     data class Error(val errorMessage: String) : UserInfoPreviewState()
 }
@@ -65,7 +65,7 @@ private fun <T> RequestResult<T>.toUserInfoPreviewState(): UserInfoPreviewState 
 private fun MainScreenPreviewResponse.toMainScreenPreviewUi(): MainScreenPreviewUi {
     return MainScreenPreviewUi(
         gender = gender.toGenderUI(),
-        loginId = loginId,
+        userId = userId,
         mainPhotoPath = mainPhotoPath,
         name = name,
         age = dateOfBirth.getCountYearsToCurrentYear()

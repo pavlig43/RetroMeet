@@ -109,3 +109,12 @@ enum class MusicGenre {
     Electronic,
     Other
 }
+@Serializable
+enum class FriendStatus(val level:Int){
+    FRIEND(FRIEND_RIGHTS),
+    REQUEST_PLUS(NO_RIGHTS),
+    REQUEST_MINUS(NO_RIGHTS),
+    NO_DATA(NO_RIGHTS)
+}
+private const val NO_RIGHTS = 0
+private const val FRIEND_RIGHTS = 2

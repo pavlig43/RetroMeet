@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pavlig43.features.R
+import com.pavlig43.features.common.enumui.model.GenderUi
 import com.pavlig43.features.mainscreen.model.MainScreenPreviewUi
 import com.pavlig43.retromeetuicommon.ErrorScreen
 import com.pavlig43.retromeetuicommon.LoadingScreen
@@ -239,6 +240,6 @@ private fun MenuItemRow(
 private fun MainScreenPreview() {
     MainScreenPrivate(
         onExit = {},
-        mainScreenPreviewUi = MainScreenPreviewUi(loginId = 1, name = "name", age = 35)
+        mainScreenPreviewUi = MainScreenPreviewUi(userId = 1, name = "name", gender = GenderUi.NULL, age = 35)
     )
 }

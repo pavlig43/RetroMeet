@@ -1,11 +1,13 @@
 package com.pavlig43.features.searchuser
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -20,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pavlig43.features.R
+import com.pavlig43.features.common.UserInfoItem
 import com.pavlig43.features.common.enumui.ListEnumItem
 import com.pavlig43.features.common.enumui.OneEnumItem
 import com.pavlig43.features.common.enumui.model.DrinkingUi
@@ -38,14 +41,13 @@ import com.pavlig43.features.common.enumui.model.SmokingUi
 import com.pavlig43.features.common.textfield.TextFieldRange
 import com.pavlig43.features.common.textfield.TextFieldResumeItem
 import com.pavlig43.features.searchuser.model.SearchUserRequestUi
-import kotlinx.serialization.Serializable
 import kotlin.reflect.KClass
 
 
 
 @Composable
 fun SearchUsersScreen(
-    onSearch: (SearchUserRequestUi) -> Unit,
+    onSearchScreen: () -> Unit,
     viewModel: SearchUsersViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -54,16 +56,20 @@ fun SearchUsersScreen(
         searchRequest = request,
         changeName = viewModel::changeName,
         changeCity = viewModel::changeCity,
-        onValueChangeAgeFrom = viewModel::onChangeAgeTo,
-        onValueChangeAgeTo = viewModel::onChangeAgeFrom,
-        onValueChangeWeightFrom = viewModel::onChangeWeightTo,
+        onValueChangeAgeFrom = viewModel::onChangeAgeFrom,
+        onValueChangeAgeTo = viewModel::onChangeAgeTo,
+        onValueChangeWeightFrom = viewModel::onChangeWeightFrom,
         onValueChangeWeightTo = viewModel::onChangeWeightTo,
         onValueChangeHeightFrom = viewModel::onChangeHeightFrom,
         onValueChangeHeightTo = viewModel::onChangeHeightTo,
         onChoiceSingleEnum = viewModel::onChoiceSingleEnumUi,
         addEnumUi = viewModel::addEnumUi,
         removeEnumUi = viewModel::removeEnumUi,
-        onSearch = {onSearch(request)},
+        onSearch = {
+            viewModel.saveSearchRequest()
+            onSearchScreen()
+        },
+        onOnlyOnlineChange = viewModel::onChangeOnline,
         modifier = modifier,
     )
 
@@ -72,6 +78,7 @@ fun SearchUsersScreen(
 @Composable
 fun SearchUsersScreenPrivate(
     searchRequest: SearchUserRequestUi,
+    onOnlyOnlineChange: (Boolean) -> Unit,
     changeName: (String) -> Unit,
     changeCity: (String) -> Unit,
     onValueChangeAgeFrom: (String) -> Unit,
@@ -96,6 +103,12 @@ fun SearchUsersScreenPrivate(
     ) {
 
         var openedMenu: KClass<out EnumUi>? by remember { mutableStateOf(null) }
+        UserInfoItem(stringResource(R.string.only_online)){
+            Checkbox(
+                checked = searchRequest.isOnline,
+                onCheckedChange = onOnlyOnlineChange
+            )
+        }
         TextFieldResumeItem(
             description = R.string.name,
             value = searchRequest.name,
@@ -132,7 +145,29 @@ fun SearchUsersScreenPrivate(
             maxCharsTo = 3,
             maxCharsFrom = 3
         )
+        val multiEnumList:Map<List<EnumUi>, List<EnumUi>> = mapOf(
+            GenderUi.entries.toList() to searchRequest.gender,
+            OrientationUi.entries.toList() to searchRequest.orientation,
+            ReligionUi.entries.toList() to searchRequest.religion,
+            EyeColorUi.entries.toList() to searchRequest.eyeColor,
+            HairColorUi.entries.toList() to searchRequest.hairColor,
+            EducationUi.entries.toList() to searchRequest.education,
+            PetUi.entries.toList() to searchRequest.pets,
+            MusicGenreUi.entries.toList() to searchRequest.favoriteMusicGenres
+        )
+
+        multiEnumList.forEach { (entries: List<EnumUi>, enumItems: List<EnumUi>) ->
+            ListEnumItem(
+                openedMenu = openedMenu,
+                onOpenMenu = { openedMenu = it },
+                onExpandedChange = {},
+                enumItems = enumItems,
+                entries = entries,
+                addEnumUi = addEnumUi,
+                removeEnumUi = removeEnumUi
+            )}
         val singleEnumList: Map<EnumUi, List<EnumUi>> = mapOf(
+
             searchRequest.children to IsHasChildrenUi.entries.toList(),
             searchRequest.drinking to DrinkingUi.entries.toList(),
             searchRequest.smoking to SmokingUi.entries.toList(),
@@ -148,27 +183,8 @@ fun SearchUsersScreenPrivate(
                 onChoiceItem = onChoiceSingleEnum
             )
         }
-        val multiEnumList: Map<List<EnumUi>, List<EnumUi>> = mapOf(
-            searchRequest.gender to GenderUi.entries.toList(),
-            searchRequest.orientation to OrientationUi.entries.toList(),
-            searchRequest.religion to ReligionUi.entries.toList(),
-            searchRequest.eyeColor to EyeColorUi.entries.toList(),
-            searchRequest.hairColor to HairColorUi.entries.toList(),
-            searchRequest.education to EducationUi.entries.toList(),
-            searchRequest.pets to PetUi.entries.toList(),
-            searchRequest.favoriteMusicGenres to MusicGenreUi.entries.toList()
-        )
-        multiEnumList.forEach { (enumItems: List<EnumUi>, entries: List<EnumUi>) ->
-            ListEnumItem(
-                openedMenu = openedMenu,
-                onOpenMenu = { openedMenu = it },
-                onExpandedChange = {},
-                enumItems = enumItems,
-                entries = entries,
-                addEnumUi = addEnumUi,
-                removeEnumUi = removeEnumUi
-            )
-        }
+
+
         Button(onSearch) {
             Text(stringResource(R.string.search))
         }
@@ -183,7 +199,7 @@ fun SearchUsersScreenPrivate(
 @Composable
 private fun SearchUsersScreenPrev() {
     SearchUsersScreenPrivate(
-        searchRequest = SearchUserRequestUi(),
+        searchRequest = SearchUserRequestUi(isOnline = true),
         changeName = {},
         onValueChangeAgeFrom = {},
         onValueChangeAgeTo = {},
@@ -196,7 +212,8 @@ private fun SearchUsersScreenPrev() {
         onChoiceSingleEnum = {},
         addEnumUi = {},
         removeEnumUi = {},
-        onSearch = {}
+        onSearch = {},
+        onOnlyOnlineChange = {}
     )
 
 }

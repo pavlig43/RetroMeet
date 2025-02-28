@@ -13,7 +13,7 @@ fun NavGraphBuilder.login(
 ) {
     composable<LoginRoute> {
         LoginScreen(
-            onEnter = { loginId -> navController.navigate(MainScreenRoute(loginId)) },
+            onEnter = { navController.navigate(MainScreenRoute) },
             onRegisterScreen = { navController.navigate(RegisterRoute) }
         )
     }

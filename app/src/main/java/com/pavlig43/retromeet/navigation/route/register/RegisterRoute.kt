@@ -15,7 +15,7 @@ fun NavGraphBuilder.register(
 ) {
     composable<RegisterRoute> {
         RegisterScreen(
-            onEnter = { login -> navController.navigate(MainScreenRoute(login)) }
+            onEnter = { navController.navigate(MainScreenRoute) }
         )
     }
 }

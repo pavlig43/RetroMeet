@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.pavlig43.features.R
 import com.pavlig43.features.common.UserInfoItem
 import com.pavlig43.features.common.enumui.model.EnumUi
 import com.pavlig43.features.common.enumui.model.OrientationUi
@@ -74,7 +75,7 @@ private fun ListEnumItemDropMenu(
     modifier: Modifier = Modifier
 ) {
 
-    var expanded by remember(openedMenu) {
+    val expanded by remember(openedMenu) {
         mutableStateOf(openedMenu?.let { it == entries.first()::class } == true)
     }
 
@@ -94,6 +95,9 @@ private fun ListEnumItemDropMenu(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val items = enumItems.map { stringResource(it.translate) }.joinToString("\n")
+                .takeIf { it.isNotEmpty() } ?: stringResource(
+                R.string.not_important
+            )
             Text(items, fontSize = FONT_SIZE.sp, textDecoration = TextDecoration.Underline)
             Icon(
                 if (!expanded) Icons.Default.ArrowDropDown else Icons.Default.KeyboardArrowUp,
@@ -114,7 +118,7 @@ private fun ListEnumItemDropMenu(
 
                             )
                         },
-                        onClick = {if (!checked) addEnumUi(entry) else removeEnumUi(entry)}
+                        onClick = { if (!checked) addEnumUi(entry) else removeEnumUi(entry) }
                     )
                 }
 

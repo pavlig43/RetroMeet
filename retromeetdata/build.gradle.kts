@@ -56,6 +56,12 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.kts)
+    implementation(libs.androidx.room.paging)
+
+    implementation(libs.androidx.datastore.preferences)
+
+    implementation(libs.java.websocket)
+    implementation(libs.kotlinx.datetime)
 
 
 

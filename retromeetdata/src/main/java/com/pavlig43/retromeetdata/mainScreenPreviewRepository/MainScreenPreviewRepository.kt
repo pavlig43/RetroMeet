@@ -1,32 +1,34 @@
 package com.pavlig43.retromeetdata.mainScreenPreviewRepository
 
 import com.pavlig43.retromeetcommon.Logger
+import com.pavlig43.retromeetdata.DateStoreSettings
 import com.pavlig43.retromeetdata.mainScreenPreviewRepository.api.MainScreenPreviewApi
 import com.pavlig43.retromeetdata.mainScreenPreviewRepository.model.MainScreenPreviewResponse
 import com.pavlig43.retromeetdata.utils.requestResult.RequestResult
 import com.pavlig43.retromeetdata.utils.requestResult.toRequestResult
-import com.pavlig43.retromeetdata.utils.requestResult.toRequestResultWithMap
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class MainScreenPreviewRepository @Inject constructor(
+    private val dataStore: DateStoreSettings,
     private val api: MainScreenPreviewApi,
     private val logger: Logger
 ) {
 
-    fun observeMainScreenPreview(loginId: Int): Flow<RequestResult<MainScreenPreviewResponse>> {
-
-        return flow { emit(getMainScreenPreviewFromServer(loginId)) }
+    fun observeMainScreenPreview(): Flow<RequestResult<MainScreenPreviewResponse>> {
+        return dataStore.userId.map { userId ->
+            getMainScreenPreviewFromServer(userId)
+        }
     }
 
-    private suspend fun getMainScreenPreviewFromServer(loginId: Int): RequestResult<MainScreenPreviewResponse> {
-        val response = api.getMainScreenPreview(loginId)
+    private suspend fun getMainScreenPreviewFromServer(userId: Int): RequestResult<MainScreenPreviewResponse> {
+        val response = api.getMainScreenPreview(userId)
             .toRequestResult(
                 TAG,
                 logger,
 
-            )
+                )
         return response
     }
 

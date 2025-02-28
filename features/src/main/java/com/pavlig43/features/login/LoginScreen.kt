@@ -12,7 +12,7 @@ import com.pavlig43.retromeetuicommon.LoginScreen
 
 @Composable
 fun LoginScreen(
-    onEnter: (Int) -> Unit,
+    onEnter: () -> Unit,
     onRegisterScreen: () -> Unit,
     viewModel: LoginViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
@@ -37,7 +37,7 @@ fun LoginScreen(
     when (val state = loginState) {
         is LoginState.Error -> {}
         LoginState.Loading -> {}
-        is LoginState.Success -> { onEnter(state.loginId) }
+        is LoginState.Success -> { onEnter() }
         LoginState.Start -> {}
     }
 }

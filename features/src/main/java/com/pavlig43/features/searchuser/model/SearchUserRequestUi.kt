@@ -15,7 +15,6 @@ import com.pavlig43.features.common.enumui.model.SmokingUi
 import kotlinx.serialization.Serializable
 
 
-@Serializable
 data class SearchUserRequestUi(
     val city: String = "",
     val name: String = "",
@@ -34,21 +33,19 @@ data class SearchUserRequestUi(
     val maritalStatus: MaritalStatusUi = MaritalStatusUi.NULL,
     val pets: List<PetUi> = listOf(),
     val favoriteMusicGenres: List<MusicGenreUi> = listOf(),
+    val isOnline:Boolean,
 )
 
-@Serializable
 data class DateOfBirthRangeUi(
     val from: String = "",
     val to: String = ""
 )
 
-@Serializable
 data class WeightRangeUi(
     val from: String = "",
     val to: String = ""
 )
 
-@Serializable
 data class HeightRangeUi(
     val from: String = "",
     val to: String = ""

@@ -22,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val loginRepository: LoginRepository,
+    private val loginRepository: LoginRepository
+
 ) : ViewModel() {
     private val _login = MutableStateFlow(LoginRequestUi())
     val login = _login.asStateFlow()
@@ -54,12 +55,13 @@ class LoginViewModel @Inject constructor(
             onResult(loginState.value.message ?: "")
         }
     }
+
 }
 
 sealed class LoginState(open val message: String? = null) {
-    object Start : LoginState()
-    object Loading : LoginState()
-    data class Success(val loginId: Int, override val message: String) : LoginState(message)
+    data object Start : LoginState()
+    data object Loading : LoginState()
+    data class Success(val userId: Int, override val message: String) : LoginState(message)
     data class Error(override val message: String) : LoginState(message)
 }
 
@@ -67,10 +69,10 @@ private fun RequestResult<LoginResponseUi>.toLoginState(): LoginState {
     return when (val result = this) {
         is RequestResult.Error -> LoginState.Error(result.throwable?.message ?: "Unknown error")
         is RequestResult.InProgress -> LoginState.Loading
-        is RequestResult.Success -> result.data?.loginId?.let { LoginState.Success(it, WELCOME) }
+        is RequestResult.Success -> result.data?.userId?.let { LoginState.Success(it, WELCOME) }
             ?: LoginState.Error("Unknown error")
     }
 }
 
 private fun LoginRequestUi.toLoginRequest() = LoginRequest(login, password)
-private fun LoginResponse.toLoginResponseUi() = LoginResponseUi(loginId)
+private fun LoginResponse.toLoginResponseUi() = LoginResponseUi(userId)

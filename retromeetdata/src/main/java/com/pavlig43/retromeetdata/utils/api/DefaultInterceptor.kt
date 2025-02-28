@@ -12,8 +12,8 @@ class DefaultInterceptor(
     override fun intercept(chain: Interceptor.Chain): Response {
         val logger = Logger.DEFAULT
         val originalRequest = chain.request()
-        logger.log("$logTag: Request Url: ${originalRequest.url}")
-        originalRequest.body?.let { logger.log("$logTag - Request Body: ${it.contentType()}") }
+        logger.log("$logTag: Request Url: ${originalRequest.url} method:${originalRequest.method}")
+        originalRequest.body?.let { logger.log("$logTag - Request Body: $it") }
 
         val response = chain.proceed(originalRequest)
         response.body?.let {

@@ -25,6 +25,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "RETROMEET_API_BASE_URL", "\"http://10.0.2.2:8080/\"")
+        buildConfigField("String", "RETROMEET_WS", "\"ws://10.0.2.2:8080\"")
     }
 
     buildTypes {
@@ -37,11 +38,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_22
-        targetCompatibility = JavaVersion.VERSION_22
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "22"
+        jvmTarget = "21"
     }
     buildFeatures {
         buildConfig = true
@@ -85,6 +86,8 @@ dependencies {
 
     implementation(libs.kotlinx.serialization.json)
     debugImplementation(libs.leakcanary.android)
+
+    implementation(libs.kotlinx.datetime)
 
 
 

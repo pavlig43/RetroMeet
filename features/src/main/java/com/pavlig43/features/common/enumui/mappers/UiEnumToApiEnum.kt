@@ -3,6 +3,7 @@ package com.pavlig43.features.common.enumui.mappers
 import com.pavlig43.features.common.enumui.model.DrinkingUi
 import com.pavlig43.features.common.enumui.model.EducationUi
 import com.pavlig43.features.common.enumui.model.EyeColorUi
+import com.pavlig43.features.common.enumui.model.FriendStatusUi
 import com.pavlig43.features.common.enumui.model.GenderUi
 import com.pavlig43.features.common.enumui.model.HairColorUi
 import com.pavlig43.features.common.enumui.model.IsHasChildrenUi
@@ -15,6 +16,7 @@ import com.pavlig43.features.common.enumui.model.SmokingUi
 import com.pavlig43.retromeetdata.common.Drinking
 import com.pavlig43.retromeetdata.common.Education
 import com.pavlig43.retromeetdata.common.EyeColor
+import com.pavlig43.retromeetdata.common.FriendStatus
 import com.pavlig43.retromeetdata.common.Gender
 import com.pavlig43.retromeetdata.common.HairColor
 import com.pavlig43.retromeetdata.common.MaritalStatus
@@ -85,6 +87,10 @@ fun IsHasChildrenUi.toBoolean(): Boolean?{
     return this.takeIf { it != IsHasChildrenUi.NULL }?.let {
         it == IsHasChildrenUi.YES
     }
+}
+
+fun FriendStatusUi.toFriendStatus(): FriendStatus {
+    return FriendStatus.valueOf(this.name)
 }
 
 

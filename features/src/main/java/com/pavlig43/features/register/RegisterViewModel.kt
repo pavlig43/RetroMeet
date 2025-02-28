@@ -62,9 +62,9 @@ class RegisterViewModel @Inject constructor(
 }
 
 sealed class RegisterState(open val message: String? = null) {
-    object Start : RegisterState()
-    object Loading : RegisterState()
-    data class Success(val loginId: Int, override val message: String) : RegisterState()
+    data object Start : RegisterState()
+    data object Loading : RegisterState()
+    data class Success(val userId: Int, override val message: String) : RegisterState()
     data class Error(override val message: String) : RegisterState()
 }
 
@@ -72,10 +72,10 @@ private fun RequestResult<RegisterResponseUi>.toRegisterState(): RegisterState {
     return when (val result = this) {
         is RequestResult.Error -> RegisterState.Error(result.throwable?.message ?: "Unknown error")
         is RequestResult.InProgress -> RegisterState.Loading
-        is RequestResult.Success -> result.data?.loginId?.let { RegisterState.Success(it, WELCOME) }
+        is RequestResult.Success -> result.data?.userId?.let { RegisterState.Success(it, WELCOME) }
             ?: RegisterState.Error("Unknown error")
     }
 }
 
 private fun RegisterRequestUi.toRegisterRequest() = RegisterRequest(login, password)
-private fun RegisterResponse.toRegisterResponseUi() = RegisterResponseUi(loginId)
+private fun RegisterResponse.toRegisterResponseUi() = RegisterResponseUi(userId)

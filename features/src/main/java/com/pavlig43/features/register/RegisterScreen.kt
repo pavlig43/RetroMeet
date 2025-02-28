@@ -12,7 +12,7 @@ import com.pavlig43.retromeetuicommon.RegisterScreen
 
 @Composable
 fun RegisterScreen(
-    onEnter: (Int) -> Unit,
+    onEnter: () -> Unit,
     viewModel: RegisterViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -35,7 +35,7 @@ fun RegisterScreen(
     when (val state = registerState) {
         is RegisterState.Error -> {}
         RegisterState.Loading -> {}
-        is RegisterState.Success -> { onEnter(state.loginId) }
+        is RegisterState.Success -> { onEnter() }
         RegisterState.Start -> {}
     }
 }

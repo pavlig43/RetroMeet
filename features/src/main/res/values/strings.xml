@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="male">Мужской</string>
+    <string name="m">М</string>
     <string name="female">Женский</string>
+    <string name="f">Ж</string>
     <string name="views_per_week">Просмотров за неделю</string>
     <string name="exit">Выйти</string>
     <string name="resume_form">resume_form</string>
     <string name="resume">Анкета</string>
     <string name="friends">Друзья</string>
+    <string name="my_requests">Мои заявки</string>
+    <string name="requests">Заявки</string>
     <string name="friends_description">friends_description</string>
     <string name="messages_description">messages_description</string>
     <string name="search_description">search_description</string>
@@ -75,11 +79,19 @@
     <string name="smoking">Курение</string>
     <string name="alcohol">Алкоголь</string>
     <string name="marital_status">Семейное положение</string>
-    <string name="pet">Домашние животные</string>
+    <string name="pets">Домашние животные</string>
     <string name="music">Музыка</string>
     <string name="not_important">Не важно</string>
     <string name="name">Имя</string>
+    <string name="date_registration">Дата регистррации</string>
     <string name="count_children">Количество детей</string>
+    <string name="occupation">Профессия </string>
+    <string name="hobbies">Хобби </string>
+    <string name="interests">Интересы </string>
+    <string name="about_me">Обо мне </string>
+    <string name="favorite_movies">Любимые фильмы </string>
+    <string name="favorite_music_genres">Любимые музыкальные жанры </string>
+    <string name="favorite_books">Любимые книги </string>
     <string name="weight_kg">Вес(кг)</string>
     <string name="height_cm">Рост(см)</string>
     <string name="save">Сохранить</string>
@@ -91,6 +103,18 @@
     <string name="children">Дети</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="photo_album">Фотоальбом</string>
+    <string name="friend_status">Статус дружбы</string>
+    <string name="delete_from_friend">Удалить из друзей</string>
+    <string name="request_sent">Заявка отправлена</string>
+    <string name="accept_request">Принять заявку</string>
+    <string name="add_friend">Добавить в друзья</string>
+    <string name="cancel_request">Отменить заявку</string>
+    <string name="last_visit_online">Был(а) в сети </string>
+    <string name="now_online">Сейчас в сети: </string>
+    <string name="id">ID </string>
+    <string name="only_online">Только онлайн</string>
+    <string name="blank_string"> </string>
 </resources>
 
 

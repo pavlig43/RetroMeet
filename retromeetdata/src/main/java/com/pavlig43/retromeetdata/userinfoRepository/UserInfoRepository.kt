@@ -1,40 +1,63 @@
 package com.pavlig43.retromeetdata.userinfoRepository
 
 import com.pavlig43.retromeetcommon.Logger
-import com.pavlig43.retromeetdata.userinfoRepository.api.ResumeApi
+import com.pavlig43.retromeetdata.DateStoreSettings
+import com.pavlig43.retromeetdata.searchuserRepository.model.FriendPreviewResponse
+import com.pavlig43.retromeetdata.userinfoRepository.api.UserInfoApi
 import com.pavlig43.retromeetdata.userinfoRepository.model.UserInfoResponse
-import com.pavlig43.retromeetdata.userinfoRepository.model.UserInfoUpdateRequest
+import com.pavlig43.retromeetdata.utils.database.RetromeetDataBase
 import com.pavlig43.retromeetdata.utils.requestResult.RequestResult
 import com.pavlig43.retromeetdata.utils.requestResult.toRequestResult
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 class UserInfoRepository @Inject constructor(
-    private val resumeApi: ResumeApi,
-    private val logger: Logger,
+    private val dataBase: RetromeetDataBase,
+    private val dataStore:DateStoreSettings,
+    private val api: UserInfoApi,
+    private val logger: Logger
 ) {
-    suspend fun getUserInfo(loginId: Int): RequestResult<UserInfoResponse> {
-        val userInfo = getUserInfoFromServer(loginId)
-        return userInfo
-    }
-    fun observeUserInfo(loginId: Int): Flow<RequestResult<UserInfoResponse>> {
-        return flow { emit(getUserInfoFromServer(loginId)) }
+    fun observeUserInfo( friendId: Int): Flow<RequestResult<UserInfoResponse>> {
+        return dataStore.userId.map { userId->
+            getUserInfoFromServer(userId, friendId)
+        }
+//        return flow { emit(getUserInfoFromServer(userId, friendId)) }
     }
 
-    private suspend fun getUserInfoFromServer(loginId: Int): RequestResult<UserInfoResponse> {
-        val apiResponse: RequestResult<UserInfoResponse> = resumeApi.getUserInfo(loginId)
+    private suspend fun getUserInfoFromServer(
+        userId: Int,
+        friendId: Int
+    ): RequestResult<UserInfoResponse> {
+        val requestResult = api.getUserInfo(userId, friendId)
             .toRequestResult(
                 TAG,
-                logger,
+                logger
             )
-        return apiResponse
-    }
-    suspend fun updateUserInfo(updaterUserInfo: UserInfoUpdateRequest) {
-        resumeApi.updateUserInfo(updaterUserInfo)
+        if (requestResult is RequestResult.Success) {
+            requestResult.data?.let {
+                dataBase.searchDao.upsertUser(it.toFriendPreviewResponse(userId))
+            }
+        }
+        return requestResult
     }
 
     companion object {
         const val TAG = "UserInfoRepository"
     }
+
+    private fun UserInfoResponse.toFriendPreviewResponse(userId: Int): FriendPreviewResponse {
+        return FriendPreviewResponse(
+            userId = userId,
+            friendId = resume.userId,
+            gender = resume.gender,
+            name = resume.name,
+            city = resume.city,
+            dateOfBirth = resume.dateOfBirth,
+            mainPhotoPath = resume.mainPhotoPath,
+            friendStatus = friendStatus,
+            isOnline = lastVisit.time == null)
+    }
 }
+

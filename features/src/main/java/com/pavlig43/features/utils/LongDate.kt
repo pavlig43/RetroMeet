@@ -1,55 +1,108 @@
 package com.pavlig43.features.utils
 
-import java.time.Instant
-import java.time.LocalDate
+import kotlinx.datetime.Clock
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlinx.datetime.format.char
+import kotlinx.datetime.minus
+import kotlinx.datetime.plus
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.yearsUntil
 import java.time.ZoneId
-import java.time.chrono.IsoChronology
-import java.time.format.DateTimeFormatter
-import java.time.format.DateTimeFormatterBuilder
-import java.time.format.FormatStyle
-import java.util.Locale
+
+private fun nowDateInStartDay(): Instant {
+    return Clock.System.now().toLocalDateTime(TimeZone.UTC).date.atStartOfDayIn(TimeZone.UTC)
+}
 
 
 fun Long?.getCountYearsToCurrentYear(): Int? {
     return this?.let {
-        val date = Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate()
-        val currentYear = LocalDate.now().year
-        currentYear - date.year
+        val start = nowDateInStartDay()
+        val end =
+            Instant.fromEpochMilliseconds(it).toLocalDateTime(TimeZone.UTC).date.atStartOfDayIn(
+                TimeZone.UTC
+            )
+        val years = end.yearsUntil(start, TimeZone.UTC)
+        years
     }
 }
+
+private fun LocalDateTime.toRussianFormat(withTime: Boolean = false): String {
+    val format = LocalDateTime.Format {
+        dayOfMonth()
+        char('.')
+        monthNumber()
+        char('.')
+        year()
+        if (withTime) {
+            char(' ')
+            hour()
+            char(':')
+            minute()
+        }
+
+    }
+
+    return format.format(this)
+}
+
+
 
 fun Long?.convertToDate(): String? {
     return this?.let {
-        val formatter = getLocalizedDateTimeFormatter(Locale.getDefault())
-        val formattedDate =
-            formatter.format(Instant.ofEpochMilli(it).atZone(ZoneId.systemDefault()).toLocalDate())
-        val parts = formattedDate.split(Regex("[/\\-.,]"))
-        parts.joinToString(".") { part -> part.padStart(2, '0') }
+
+        Instant.fromEpochMilliseconds(it)
+            .toLocalDateTime(TimeZone.currentSystemDefault()).toRussianFormat()
     }
 
 }
 
 
-
-private fun getLocalizedDateTimeFormatter(locale: Locale): DateTimeFormatter {
-    var pattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(
-        FormatStyle.SHORT,
-        null,
-        IsoChronology.INSTANCE,
-        locale
-    )
-    pattern = pattern.replace("yy", "yyyy")
-    return DateTimeFormatter.ofPattern(pattern)
+fun String.maxDateOfBirthUnix(): Long? {
+    return this.toLongOrNull()?.let { age ->
+        val minDateOfBirthTimeStamp =
+            nowDateInStartDay().minus(age + 1, DateTimeUnit.YEAR, TimeZone.UTC)
+                .plus(1, DateTimeUnit.DAY, TimeZone.UTC).toEpochMilliseconds()
+        minDateOfBirthTimeStamp
+    }
 }
+
+fun String.minDateOfBirthUnix(): Long? {
+    return this.toLongOrNull()?.let { age ->
+        val maxDateOfBirthTimeStamp =
+            nowDateInStartDay().minus(age, DateTimeUnit.YEAR, TimeZone.UTC).toEpochMilliseconds()
+        maxDateOfBirthTimeStamp
+    }
+}
+
 
 /**
- * Получаем дату рождения в Unix исходя из количества лет
+ * 12.02.2025, 11:17
  */
-fun String.toDateOfBirthUnix(): Long?{
-    return this.toLongOrNull()?.let {
-        val dateOfBirth = LocalDate.now().minusYears(it)
-        dateOfBirth.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli()
+fun Long?.convertToDateTime(): String? {
+    return this?.let {
+        Instant.fromEpochMilliseconds(it)
+            .toLocalDateTime(TimeZone.currentSystemDefault()).toRussianFormat(true)
     }
+}
+
+fun main() {
+
+
+    val start = 415065600000.getCountYearsToCurrentYear()
+    val end = 446688000000.getCountYearsToCurrentYear()
+    println(start)
+    println(end)
+
+    val age = "30"
+    val min = age.minDateOfBirthUnix().convertToDate()
+    val max = age.maxDateOfBirthUnix().convertToDate()
+
+
 
 }
 

@@ -1,7 +1,7 @@
 package com.pavlig43.retromeetdata.registerRepository
 
-import android.util.Log
 import com.pavlig43.retromeetcommon.Logger
+import com.pavlig43.retromeetdata.DateStoreSettings
 import com.pavlig43.retromeetdata.loginRepository.model.LoginRequest
 import com.pavlig43.retromeetdata.registerRepository.api.RegisterApi
 import com.pavlig43.retromeetdata.registerRepository.model.RegisterRequest
@@ -13,6 +13,7 @@ import jakarta.inject.Inject
 
 class RegisterRepository @Inject constructor(
     private val dataBase: RetromeetDataBase,
+    private val dataStore: DateStoreSettings,
     private val registerApi: RegisterApi,
     private val logger: Logger
 ) {
@@ -27,7 +28,8 @@ class RegisterRepository @Inject constructor(
 
         if (response is RequestResult.Success){
 
-            dataBase.loginDao.insertLogin(registerData.toLoginRequest(response.data?.loginId?:0))
+            dataBase.loginDao.insertLogin(registerData.toLoginRequest(response.data?.userId?:0))
+            response.data?.let { dataStore.setUserId(it.userId) }
         }
         return response
     }

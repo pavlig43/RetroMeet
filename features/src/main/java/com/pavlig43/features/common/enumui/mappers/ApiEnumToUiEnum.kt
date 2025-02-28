@@ -3,6 +3,7 @@ package com.pavlig43.features.common.enumui.mappers
 import com.pavlig43.features.common.enumui.model.DrinkingUi
 import com.pavlig43.features.common.enumui.model.EducationUi
 import com.pavlig43.features.common.enumui.model.EyeColorUi
+import com.pavlig43.features.common.enumui.model.FriendStatusUi
 import com.pavlig43.features.common.enumui.model.GenderUi
 import com.pavlig43.features.common.enumui.model.HairColorUi
 import com.pavlig43.features.common.enumui.model.MaritalStatusUi
@@ -10,10 +11,12 @@ import com.pavlig43.features.common.enumui.model.MusicGenreUi
 import com.pavlig43.features.common.enumui.model.OrientationUi
 import com.pavlig43.features.common.enumui.model.PetUi
 import com.pavlig43.features.common.enumui.model.ReligionUi
+import com.pavlig43.features.common.enumui.model.ShortGenderUi
 import com.pavlig43.features.common.enumui.model.SmokingUi
 import com.pavlig43.retromeetdata.common.Drinking
 import com.pavlig43.retromeetdata.common.Education
 import com.pavlig43.retromeetdata.common.EyeColor
+import com.pavlig43.retromeetdata.common.FriendStatus
 import com.pavlig43.retromeetdata.common.Gender
 import com.pavlig43.retromeetdata.common.HairColor
 import com.pavlig43.retromeetdata.common.MaritalStatus
@@ -28,6 +31,11 @@ fun Gender?.toGenderUI(): GenderUi {
     return this?.let {
         GenderUi.valueOf(it.name)
     } ?: GenderUi.NULL
+}
+fun Gender?.toShortGenderUI(): ShortGenderUi? {
+    return this?.let {
+        ShortGenderUi.valueOf(it.name)
+    }
 }
 
 fun Orientation?.toOrientationUi(): OrientationUi {
@@ -84,6 +92,10 @@ fun List<Pet>?.toPetsUI(): List<PetUi> {
 
 fun List<MusicGenre>?.toFavoriteMusicGenresUI(): List<MusicGenreUi> {
     return this?.map { MusicGenreUi.valueOf(it.name) } ?: listOf()
+}
+
+fun FriendStatus.toFriendStatusUi(): FriendStatusUi {
+    return FriendStatusUi.valueOf(this.name)
 }
 
 
