@@ -1,6 +1,5 @@
 package com.pavlig43.features.searchuser
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pavlig43.features.R
-import com.pavlig43.features.common.UserInfoItem
+import com.pavlig43.features.common.UserInfoItemRow
 import com.pavlig43.features.common.enumui.ListEnumItem
 import com.pavlig43.features.common.enumui.OneEnumItem
 import com.pavlig43.features.common.enumui.model.DrinkingUi
@@ -103,7 +102,7 @@ fun SearchUsersScreenPrivate(
     ) {
 
         var openedMenu: KClass<out EnumUi>? by remember { mutableStateOf(null) }
-        UserInfoItem(stringResource(R.string.only_online)){
+        UserInfoItemRow(stringResource(R.string.only_online)){
             Checkbox(
                 checked = searchRequest.isOnline,
                 onCheckedChange = onOnlyOnlineChange

@@ -38,9 +38,9 @@ import com.pavlig43.features.common.enumui.mappers.toSmoking
 import com.pavlig43.features.common.enumui.mappers.toSmokingUI
 import com.pavlig43.features.userInfo.nested.resume.model.ResumeUi
 import com.pavlig43.features.utils.convertToDate
-import com.pavlig43.retromeetdata.resumeRepository.ResumeRepository
-import com.pavlig43.retromeetdata.resumeRepository.model.ResumeResponse
-import com.pavlig43.retromeetdata.resumeRepository.model.ResumeUpdateRequest
+import com.pavlig43.retromeetdata.resume.ResumeRepository
+import com.pavlig43.retromeetdata.resume.model.ResumeResponse
+import com.pavlig43.retromeetdata.resume.model.ResumeUpdateRequest
 import com.pavlig43.retromeetdata.utils.requestResult.RequestResult
 import com.pavlig43.retromeetdata.utils.requestResult.mapTo
 import dagger.hilt.android.lifecycle.HiltViewModel

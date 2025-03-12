@@ -12,4 +12,3 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
         CircularProgressIndicator()
     }
 }
-

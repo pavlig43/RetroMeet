@@ -1,7 +1,7 @@
 package com.pavlig43.retromeet.di.login
 
 import com.pavlig43.retromeet.BuildConfig
-import com.pavlig43.retromeetdata.loginRepository.api.LoginApi
+import com.pavlig43.retromeetdata.login.api.LoginApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

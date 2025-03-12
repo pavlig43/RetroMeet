@@ -18,7 +18,8 @@ fun LoadingButton(
     modifier: Modifier = Modifier
 ) {
     Button(
-        onClick, modifier = modifier
+        onClick,
+        modifier = modifier
     ) {
         if (isLoading) {
             CircularProgressIndicator(
@@ -28,14 +29,7 @@ fun LoadingButton(
                     .size(24.dp)
                     .padding(4.dp)
             )
-
         }
         Text(text = textButton)
-
     }
-
 }
-
-
-
-

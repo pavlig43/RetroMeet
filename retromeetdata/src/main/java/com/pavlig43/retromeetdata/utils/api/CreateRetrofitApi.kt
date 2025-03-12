@@ -3,7 +3,6 @@ package com.pavlig43.retromeetdata.utils.api
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.skydoves.retrofit.adapters.result.ResultCallAdapterFactory
 import kotlinx.serialization.json.Json
-import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -11,8 +10,7 @@ import retrofit2.Retrofit
 internal inline fun <reified T> createRetrofitApi(
     baseUrl: String,
     client: OkHttpClient? = null,
-    interceptor: Interceptor? = null,
-    json: Json = Json,
+    json: Json = Json { ignoreUnknownKeys = true },
 
 ): T {
     val contentType = "application/json".toMediaType()
@@ -20,13 +18,9 @@ internal inline fun <reified T> createRetrofitApi(
 
     val clientBuilder = (client?.newBuilder() ?: OkHttpClient.Builder())
     val modifiedClient = clientBuilder.run {
-        if (interceptor != null) {
-            addInterceptor(interceptor)
-        } else {
-            this.addInterceptor(
-                DefaultInterceptor(T::class.java.simpleName)
-            )
-        }
+        this.addInterceptor(
+            DefaultInterceptor(T::class.java.simpleName)
+        )
     }
         .build()
 

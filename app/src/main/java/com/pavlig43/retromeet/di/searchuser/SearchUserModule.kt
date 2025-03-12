@@ -1,7 +1,7 @@
 package com.pavlig43.retromeet.di.searchuser
 
 import com.pavlig43.retromeet.BuildConfig
-import com.pavlig43.retromeetdata.searchuserRepository.api.SearchUserApi
+import com.pavlig43.retromeetdata.searchUser.api.SearchUserApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

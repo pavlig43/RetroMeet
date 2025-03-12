@@ -115,6 +115,15 @@
     <string name="id">ID </string>
     <string name="only_online">Только онлайн</string>
     <string name="blank_string"> </string>
+    <string name="next">Дальше</string>
+    <string name="collapse">Свернуть</string>
+    <string name="reply">Ответить</string>
+    <string name="message_read">Message Read</string>
+    <string name="message_load">Message Load</string>
+    <string name="error">Message Error</string>
+    <string name="retry_send_message">Retry Send Message</string>
+    <string name="sending">Sending</string>
+    <string name="write_message">Написать сообщение</string>
 </resources>
 
 

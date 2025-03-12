@@ -17,10 +17,10 @@ class DateStoreSettings(context: Context) {
 
     val userId: Flow<Int> = dataStore.data
         .map { preference ->
-            preference[USER_ID]?:0
+            preference[USER_ID] ?: 0
         }
 
-    suspend fun setUserId(userId:Int) {
+    suspend fun setUserId(userId: Int) {
         dataStore.edit { preferences ->
             preferences[USER_ID] = userId
         }

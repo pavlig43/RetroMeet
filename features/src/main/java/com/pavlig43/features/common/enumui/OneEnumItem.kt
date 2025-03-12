@@ -26,7 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.pavlig43.features.common.UserInfoItem
+import com.pavlig43.features.common.UserInfoItemRow
 import com.pavlig43.features.common.enumui.model.EnumUi
 import com.pavlig43.features.common.enumui.model.OrientationUi
 import kotlin.reflect.KClass
@@ -42,7 +42,7 @@ import kotlin.reflect.KClass
     onChoiceItem: (EnumUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    UserInfoItem(
+    UserInfoItemRow(
         text = stringResource(enumItem.description),
         modifier = modifier
     ) {

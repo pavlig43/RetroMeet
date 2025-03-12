@@ -1,7 +1,7 @@
 package com.pavlig43.retromeet.di.mainScreen
 
 import com.pavlig43.retromeet.BuildConfig
-import com.pavlig43.retromeetdata.mainScreenPreviewRepository.api.MainScreenPreviewApi
+import com.pavlig43.retromeetdata.mainScreenPreview.api.MainScreenPreviewApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

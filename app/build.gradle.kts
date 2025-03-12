@@ -24,8 +24,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "RETROMEET_API_BASE_URL", "\"http://10.0.2.2:8080/\"")
-        buildConfigField("String", "RETROMEET_WS", "\"ws://10.0.2.2:8080\"")
+        buildConfigField("String", "RETROMEET_API_BASE_URL", "\"https://432c-193-19-204-4.ngrok-free.app\"")
+        buildConfigField("String", "RETROMEET_WS", "\"wss://432c-193-19-204-4.ngrok-free.app\"")
     }
 
     buildTypes {

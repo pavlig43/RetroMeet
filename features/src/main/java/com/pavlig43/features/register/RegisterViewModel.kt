@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.pavlig43.features.WELCOME
 import com.pavlig43.features.register.model.RegisterRequestUi
 import com.pavlig43.features.register.model.RegisterResponseUi
-import com.pavlig43.retromeetdata.registerRepository.RegisterRepository
-import com.pavlig43.retromeetdata.registerRepository.model.RegisterRequest
-import com.pavlig43.retromeetdata.registerRepository.model.RegisterResponse
+import com.pavlig43.retromeetdata.register.RegisterRepository
+import com.pavlig43.retromeetdata.register.model.RegisterRequest
+import com.pavlig43.retromeetdata.register.model.RegisterResponse
 import com.pavlig43.retromeetdata.utils.requestResult.RequestResult
 import com.pavlig43.retromeetdata.utils.requestResult.mapTo
 import dagger.hilt.android.lifecycle.HiltViewModel

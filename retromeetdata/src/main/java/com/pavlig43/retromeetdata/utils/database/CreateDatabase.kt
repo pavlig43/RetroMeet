@@ -6,13 +6,20 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.withTransaction
-import com.pavlig43.retromeetdata.friendRepository.database.FriendDao
-import com.pavlig43.retromeetdata.loginRepository.database.LoginDao
-import com.pavlig43.retromeetdata.loginRepository.model.LoginRequest
-import com.pavlig43.retromeetdata.searchuserRepository.database.SearchDao
-import com.pavlig43.retromeetdata.searchuserRepository.model.FriendPreviewResponse
-import com.pavlig43.retromeetdata.searchuserRepository.model.SearchUserFilterRequest
-
+import com.pavlig43.retromeetdata.dialog.database.DialogsDao
+import com.pavlig43.retromeetdata.dialog.database.DialogsKeysDao
+import com.pavlig43.retromeetdata.dialog.database.DialogsRemoteKey
+import com.pavlig43.retromeetdata.dialog.model.DialogResponse
+import com.pavlig43.retromeetdata.friend.database.FriendDao
+import com.pavlig43.retromeetdata.login.database.LoginDao
+import com.pavlig43.retromeetdata.login.model.LoginRequest
+import com.pavlig43.retromeetdata.message.database.MessageDao
+import com.pavlig43.retromeetdata.message.database.MessagesRemoteKey
+import com.pavlig43.retromeetdata.message.database.MessagesRemoteKeysDao
+import com.pavlig43.retromeetdata.message.model.MessageResponse
+import com.pavlig43.retromeetdata.searchUser.database.SearchDao
+import com.pavlig43.retromeetdata.searchUser.model.FriendPreviewResponse
+import com.pavlig43.retromeetdata.searchUser.model.SearchUserFilterRequest
 
 class RetromeetDataBase internal constructor(private val newsRoomDataBase: RetromeetRoomDatabase) {
 
@@ -28,8 +35,16 @@ class RetromeetDataBase internal constructor(private val newsRoomDataBase: Retro
         get() = newsRoomDataBase.searchDao()
     val friendDao: FriendDao
         get() = newsRoomDataBase.friendDao()
-
-
+    val usersRemoteKeysDao: UsersRemoteKeysDao
+        get() = newsRoomDataBase.usersRemoteKeysDao()
+    val messageDao: MessageDao
+        get() = newsRoomDataBase.messageDao()
+    val messagesRemoteKeysDao: MessagesRemoteKeysDao
+        get() = newsRoomDataBase.messagesRemoteKeysDao()
+    val dialogsDao: DialogsDao
+        get() = newsRoomDataBase.dialogsDao()
+    val dialogsKeysDao: DialogsKeysDao
+        get() = newsRoomDataBase.dialogsKeyDao()
 }
 
 @Database(
@@ -37,6 +52,11 @@ class RetromeetDataBase internal constructor(private val newsRoomDataBase: Retro
         LoginRequest::class,
         SearchUserFilterRequest::class,
         FriendPreviewResponse::class,
+        UsersRemoteKey::class,
+        MessageResponse::class,
+        MessagesRemoteKey::class,
+        DialogResponse::class,
+        DialogsRemoteKey::class
 
     ],
     version = 1
@@ -55,7 +75,11 @@ internal abstract class RetromeetRoomDatabase : RoomDatabase() {
     abstract fun loginDao(): LoginDao
     abstract fun searchDao(): SearchDao
     abstract fun friendDao(): FriendDao
-
+    abstract fun usersRemoteKeysDao(): UsersRemoteKeysDao
+    abstract fun messageDao(): MessageDao
+    abstract fun messagesRemoteKeysDao(): MessagesRemoteKeysDao
+    abstract fun dialogsDao(): DialogsDao
+    abstract fun dialogsKeyDao(): DialogsKeysDao
 }
 
 fun RetromeetDataBase(context: Context): RetromeetDataBase {

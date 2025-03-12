@@ -83,8 +83,8 @@ fun String.minDateOfBirthUnix(): Long? {
 /**
  * 12.02.2025, 11:17
  */
-fun Long?.convertToDateTime(): String? {
-    return this?.let {
+fun Long.convertToDateTime(): String {
+    return this.let {
         Instant.fromEpochMilliseconds(it)
             .toLocalDateTime(TimeZone.currentSystemDefault()).toRussianFormat(true)
     }

@@ -11,6 +11,6 @@ fun NavGraphBuilder.searchUsersResult(
     navController: NavHostController
 ) {
     composable<SearchUserResultRoute> {
-        SearchUsersResultScreen({navController.navigate(UserInfoRoute(it))})
+        SearchUsersResultScreen({ navController.navigate(UserInfoRoute(it)) })
     }
 }

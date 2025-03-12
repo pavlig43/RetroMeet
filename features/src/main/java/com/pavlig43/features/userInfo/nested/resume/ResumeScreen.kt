@@ -35,7 +35,7 @@ import com.pavlig43.features.common.enumui.model.OrientationUi
 import com.pavlig43.features.common.enumui.model.PetUi
 import com.pavlig43.features.common.enumui.model.ReligionUi
 import com.pavlig43.features.common.enumui.model.SmokingUi
-import com.pavlig43.features.common.UserInfoItem
+import com.pavlig43.features.common.UserInfoItemRow
 import com.pavlig43.features.common.textfield.TextFieldResumeItem
 import com.pavlig43.features.userInfo.nested.resume.model.ResumeUi
 import com.pavlig43.retromeetuicommon.ErrorScreen
@@ -100,7 +100,7 @@ private fun ResumeScreenPrivate(
             onValueChange = changeName
         )
 
-        UserInfoItem(
+        UserInfoItemRow(
             text = stringResource(R.string.date_of_birth),
             item = {
                 DatePickerDocked(

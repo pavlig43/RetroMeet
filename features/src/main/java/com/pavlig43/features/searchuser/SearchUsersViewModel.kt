@@ -33,11 +33,11 @@ import com.pavlig43.features.searchuser.model.SearchUserRequestUi
 import com.pavlig43.features.searchuser.model.WeightRangeUi
 import com.pavlig43.features.utils.maxDateOfBirthUnix
 import com.pavlig43.features.utils.minDateOfBirthUnix
-import com.pavlig43.retromeetdata.searchuserRepository.SearchUserRepository
-import com.pavlig43.retromeetdata.searchuserRepository.model.DateOfBirthRange
-import com.pavlig43.retromeetdata.searchuserRepository.model.HeightRange
-import com.pavlig43.retromeetdata.searchuserRepository.model.SearchUserFilterRequest
-import com.pavlig43.retromeetdata.searchuserRepository.model.WeightRange
+import com.pavlig43.retromeetdata.searchUser.SearchUserRepository
+import com.pavlig43.retromeetdata.searchUser.model.DateOfBirthRange
+import com.pavlig43.retromeetdata.searchUser.model.HeightRange
+import com.pavlig43.retromeetdata.searchUser.model.SearchUserFilterRequest
+import com.pavlig43.retromeetdata.searchUser.model.WeightRange
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

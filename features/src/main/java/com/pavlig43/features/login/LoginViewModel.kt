@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.pavlig43.features.WELCOME
 import com.pavlig43.features.login.model.LoginRequestUi
 import com.pavlig43.features.login.model.LoginResponseUi
-import com.pavlig43.retromeetdata.loginRepository.LoginRepository
-import com.pavlig43.retromeetdata.loginRepository.model.LoginRequest
-import com.pavlig43.retromeetdata.loginRepository.model.LoginResponse
+import com.pavlig43.retromeetdata.login.LoginRepository
+import com.pavlig43.retromeetdata.login.model.LoginRequest
+import com.pavlig43.retromeetdata.login.model.LoginResponse
 import com.pavlig43.retromeetdata.utils.requestResult.RequestResult
 import com.pavlig43.retromeetdata.utils.requestResult.mapTo
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -54,7 +54,7 @@ fun MainScreen(
 ) {
     val previewState by viewModel.userInfoPreviewState.collectAsState()
     val requestToFriend by viewModel.requestToFriend.collectAsState()
-    val unreadMessages by viewModel.unreadMessages.collectAsState()
+    val unreadDialogs by viewModel.unreadDialogs.collectAsState()
     when (val state = previewState) {
         is UserInfoPreviewState.Error -> ErrorScreen(state.errorMessage, modifier)
         is UserInfoPreviewState.Loading -> LoadingScreen(modifier)
@@ -66,7 +66,7 @@ fun MainScreen(
             onSearchScreen = onSearchScreen,
             mainScreenPreviewUi = state.data,
             requestToFriend = requestToFriend,
-            unreadMessages = unreadMessages,
+            unreadMessages = unreadDialogs,
             modifier = modifier
         )
     }

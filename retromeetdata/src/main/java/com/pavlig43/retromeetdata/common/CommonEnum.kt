@@ -109,8 +109,9 @@ enum class MusicGenre {
     Electronic,
     Other
 }
+
 @Serializable
-enum class FriendStatus(val level:Int){
+enum class FriendStatus(val level: Int) {
     FRIEND(FRIEND_RIGHTS),
     REQUEST_PLUS(NO_RIGHTS),
     REQUEST_MINUS(NO_RIGHTS),

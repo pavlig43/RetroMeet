@@ -11,8 +11,9 @@ import coil3.compose.AsyncImage
 @Composable
 fun Photo(
     path: String? = null,
+    modifier: Modifier = Modifier,
     @DrawableRes pathNullHolder: Int = R.drawable.nofoto,
-    modifier: Modifier = Modifier
+
 ) {
     AsyncImage(
         model = path ?: pathNullHolder,

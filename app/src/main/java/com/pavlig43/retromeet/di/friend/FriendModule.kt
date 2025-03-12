@@ -1,9 +1,8 @@
 package com.pavlig43.retromeet.di.friend
 
 import com.pavlig43.retromeet.BuildConfig
-import com.pavlig43.retromeetdata.friendRepository.api.FriendApi
-import com.pavlig43.retromeetdata.friendRepository.api.FriendRequestApi
-import com.pavlig43.retromeetdata.loginRepository.api.LoginApi
+import com.pavlig43.retromeetdata.friend.api.FriendApi
+import com.pavlig43.retromeetdata.friend.api.FriendRequestApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,6 +21,7 @@ object FriendModule {
             client = okHttpClient
         )
     }
+
     @Provides
     @ViewModelScoped
     fun provideFriendRequestApi(okHttpClient: OkHttpClient?): FriendRequestApi {
@@ -31,5 +31,3 @@ object FriendModule {
         )
     }
 }
-
-

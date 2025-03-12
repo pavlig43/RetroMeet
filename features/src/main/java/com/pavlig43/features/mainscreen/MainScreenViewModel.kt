@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.pavlig43.features.common.enumui.mappers.toGenderUI
 import com.pavlig43.features.mainscreen.model.MainScreenPreviewUi
 import com.pavlig43.features.utils.getCountYearsToCurrentYear
-import com.pavlig43.retromeetdata.friendRepository.ObserveFriendRequestRepository
-import com.pavlig43.retromeetdata.mainScreenPreviewRepository.MainScreenPreviewRepository
-import com.pavlig43.retromeetdata.mainScreenPreviewRepository.model.MainScreenPreviewResponse
+import com.pavlig43.retromeetdata.friend.ObserveFriendRequestRepository
+import com.pavlig43.retromeetdata.mainScreenPreview.MainScreenPreviewRepository
+import com.pavlig43.retromeetdata.mainScreenPreview.model.MainScreenPreviewResponse
+import com.pavlig43.retromeetdata.dialog.ObserveUnreadDialogRepository
 import com.pavlig43.retromeetdata.utils.requestResult.RequestResult
 import com.pavlig43.retromeetdata.utils.requestResult.mapTo
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -20,29 +20,38 @@ import javax.inject.Inject
 @HiltViewModel
 class MainScreenViewModel @Inject constructor(
     mainScreenPreviewRepository: MainScreenPreviewRepository,
-    friendRequestRepository: ObserveFriendRequestRepository
+    observeFriendRequestRepository: ObserveFriendRequestRepository,
+    observeUnreadDialogRepository: ObserveUnreadDialogRepository,
 ) : ViewModel() {
 
     val userInfoPreviewState = mainScreenPreviewRepository.observeMainScreenPreview()
         .map { result -> result.mapTo { it.toMainScreenPreviewUi() }.toUserInfoPreviewState() }
         .stateIn(
             viewModelScope,
-            SharingStarted.Lazily,
+            SharingStarted.Eagerly,
             UserInfoPreviewState.Loading
         )
 
-    val requestToFriend = friendRequestRepository.observeFriendRequest()
+    val requestToFriend = observeFriendRequestRepository.observeFriendRequest()
     .stateIn(
         viewModelScope,
-        SharingStarted.Lazily,
+        SharingStarted.Eagerly,
         0
     )
+    val unreadDialogs = observeUnreadDialogRepository.observeUnreadMessageWithSender()
+        .map {response-> response.unreadDialogs.sumOf { it.count } }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.Eagerly,
+            0
+
+        )
+
 
     fun goToScreen(action: (Int) -> Unit) {
         action(1)
     }
 
-    val unreadMessages = MutableStateFlow(0)
 }
 
 sealed class UserInfoPreviewState {

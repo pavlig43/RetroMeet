@@ -8,8 +8,8 @@ import androidx.paging.map
 import com.pavlig43.features.common.enumui.mappers.toShortGenderUI
 import com.pavlig43.features.searchusersresult.model.SearchUserPreviewUi
 import com.pavlig43.features.utils.getCountYearsToCurrentYear
-import com.pavlig43.retromeetdata.searchuserRepository.SearchUserRepository
-import com.pavlig43.retromeetdata.searchuserRepository.model.FriendPreviewResponse
+import com.pavlig43.retromeetdata.searchUser.SearchUserRepository
+import com.pavlig43.retromeetdata.searchUser.model.FriendPreviewResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

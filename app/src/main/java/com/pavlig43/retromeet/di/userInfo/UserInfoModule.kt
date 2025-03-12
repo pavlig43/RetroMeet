@@ -1,8 +1,8 @@
 package com.pavlig43.retromeet.di.userInfo
 
 import com.pavlig43.retromeet.BuildConfig
-import com.pavlig43.retromeetdata.resumeRepository.api.ResumeApi
-import com.pavlig43.retromeetdata.userinfoRepository.api.UserInfoApi
+import com.pavlig43.retromeetdata.resume.api.ResumeApi
+import com.pavlig43.retromeetdata.userInfo.api.UserInfoApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

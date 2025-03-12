@@ -29,7 +29,6 @@ internal fun <T> Response<T>.toRequestResult(
         RequestResult.Error<T>(body(), throwable)
     }
 
-
     result.sendDLog(
         logTag,
         ERROR_FROM_SERVER,
@@ -47,7 +46,3 @@ private fun <T> RequestResult<T>.sendDLog(
         logger.d(tag, "$from:$throwable")
     }
 }
-
-
-
-

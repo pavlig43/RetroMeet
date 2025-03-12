@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.pavlig43.features.R
+import com.pavlig43.features.common.UserInfoItem
 import com.pavlig43.features.common.enumui.model.FriendStatusUi
 import com.pavlig43.features.common.onlinestatus.OnlineStatus
 import com.pavlig43.features.userInfo.model.UserInfoUi
@@ -24,6 +25,7 @@ import com.pavlig43.retromeetuicommon.LoadingScreen
 
 @Composable
 fun UserInfoScreen(
+    writeMessage: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: UserInfoViewModel = hiltViewModel(),
 ) {
@@ -34,7 +36,9 @@ fun UserInfoScreen(
         is UserInfoState.Success -> UserInfoScreen(
             userInfo = state.data,
             changeFriedStatus = viewModel::changeFriendStatus,
-            modifier
+            canselMyRequest = viewModel::canselRequest,
+            writeMessage = writeMessage,
+            modifier = modifier
         )
     }
 
@@ -44,6 +48,8 @@ fun UserInfoScreen(
 private fun UserInfoScreen(
     userInfo: UserInfoUi,
     changeFriedStatus: (FriendStatusUi) -> Unit,
+    writeMessage: (Int) -> Unit,
+    canselMyRequest: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -55,7 +61,9 @@ private fun UserInfoScreen(
         UserInfoResume(
             userInfo = userInfo,
             goToPhotoAlbum = {},
-            changeFriedStatus = changeFriedStatus
+            changeFriedStatus = changeFriedStatus,
+            canselMyRequest = canselMyRequest,
+            writeMessage = writeMessage
         )
     }
 
@@ -66,20 +74,26 @@ private fun UserInfoScreen(
 private fun UserInfoResume(
     userInfo: UserInfoUi,
     goToPhotoAlbum: (Int) -> Unit,
+    writeMessage:(Int)->Unit,
     changeFriedStatus: (FriendStatusUi) -> Unit,
+    canselMyRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier
             .fillMaxWidth()
     ) {
+        TextButton({ writeMessage(userInfo.resumeUi.userId) }) {
+            Text(stringResource(R.string.write_message), fontSize = 18.sp)
+        }
 
         TextButton({ goToPhotoAlbum(userInfo.resumeUi.userId) }) {
             Text(stringResource(R.string.photo_album), fontSize = 18.sp)
         }
         FriendComponent(
-            userInfo.friendStatusUi,
-            changeFriedStatus
+            friendStatusUi = userInfo.friendStatusUi,
+            changeFriedStatus = changeFriedStatus,
+            canselRequest = canselMyRequest
 
         )
         UserInfoItem(R.string.id, userInfo.resumeUi.userId.toString())
@@ -158,6 +172,7 @@ private fun UserInfoResume(
 private fun FriendComponent(
     friendStatusUi: FriendStatusUi,
     changeFriedStatus: (FriendStatusUi) -> Unit,
+    canselRequest:()->Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier.fillMaxWidth()) {
@@ -166,7 +181,7 @@ private fun FriendComponent(
         }
 
         if (friendStatusUi == FriendStatusUi.REQUEST_MINUS){
-            TextButton({ changeFriedStatus(FriendStatusUi.REQUEST_PLUS) }) {
+            TextButton(canselRequest) {
                 Text(stringResource(FriendStatusUi.REQUEST_PLUS.action), fontSize = 18.sp)
             }
         }
@@ -175,14 +190,5 @@ private fun FriendComponent(
 
 }
 
-@Composable
-private fun UserInfoItem(
-    @StringRes description: Int,
-    info: String,
-    modifier: Modifier = Modifier
-) {
-    val descriptionText = stringResource(description)
-    Text("$descriptionText: $info", modifier = modifier)
 
-}
 

@@ -11,9 +11,9 @@ import com.pavlig43.features.userInfo.model.UserInfoUi
 import com.pavlig43.features.userInfo.nested.resume.toResumeUi
 import com.pavlig43.features.userInfo.route.UserInfoRoute
 import com.pavlig43.features.utils.convertToDateTime
-import com.pavlig43.retromeetdata.friendRepository.FriendRepository
-import com.pavlig43.retromeetdata.userinfoRepository.UserInfoRepository
-import com.pavlig43.retromeetdata.userinfoRepository.model.UserInfoResponse
+import com.pavlig43.retromeetdata.friend.FriendRepository
+import com.pavlig43.retromeetdata.userInfo.UserInfoRepository
+import com.pavlig43.retromeetdata.userInfo.model.UserInfoResponse
 import com.pavlig43.retromeetdata.utils.requestResult.RequestResult
 import com.pavlig43.retromeetdata.utils.requestResult.mapTo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,10 +41,9 @@ class UserInfoViewModel @Inject constructor(
     private val refreshTrigger = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
 
 
-
     @OptIn(ExperimentalCoroutinesApi::class)
     val userInfo: StateFlow<UserInfoState> = refreshTrigger.onStart { emit(Unit) }.flatMapLatest {
-        userInfoRepository.observeUserInfo( friendId)
+        userInfoRepository.observeUserInfo(friendId)
             .map { result -> result.mapTo { it.toUserInfoUi() }.toUserInfoState() }
     }.stateIn(
         viewModelScope,
@@ -52,9 +51,18 @@ class UserInfoViewModel @Inject constructor(
         UserInfoState.Loading
     )
 
+    fun canselRequest() {
+        viewModelScope.launch {
+            val result = friendRepository.canselRequest(friendId)
+            handleRequestResultFriend(result)
+        }
+
+
+    }
+
     fun changeFriendStatus(friendStatusUi: FriendStatusUi) {
         viewModelScope.launch {
-            val result:RequestResult<Unit> = friendRepository.changeFriendStatus(
+            val result: RequestResult<Unit> = friendRepository.changeFriendStatus(
                 friendId,
                 friendStatusUi.toFriendStatus()
             )
@@ -64,8 +72,8 @@ class UserInfoViewModel @Inject constructor(
 
     }
 
-    private suspend fun handleRequestResultFriend(result: RequestResult<Unit>){
-        when (result){
+    private suspend fun handleRequestResultFriend(result: RequestResult<Unit>) {
+        when (result) {
             is RequestResult.Error -> {}
             is RequestResult.InProgress -> {}
             is RequestResult.Success -> refreshTrigger.emit(Unit)
@@ -95,7 +103,7 @@ private fun UserInfoResponse.toUserInfoUi(): UserInfoUi {
     return UserInfoUi(
         resumeUi = this.resume.toResumeUi(),
         friendStatusUi = this.friendStatus.status.toFriendStatusUi(),
-        lastVisit = this.lastVisit.time.convertToDateTime()
+        lastVisit = this.lastVisit.time?.convertToDateTime()
     )
 }
 
